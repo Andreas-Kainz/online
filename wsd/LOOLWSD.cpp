@@ -2532,7 +2532,7 @@ private:
                 response->add("X-XSS-Protection", "1; mode=block");
                 // No referrer-policy
                 response->add("Referrer-Policy", "no-referrer");
-                response->add("User-Agent", HTTP_AGENT_STRING);
+                response->set("Server", HTTP_SERVER_STRING);
                 response->add("Content-Type", "text/plain");
                 response->add("X-Content-Type-Options", "nosniff");
 
@@ -3077,7 +3077,7 @@ private:
                 std::ostringstream oss;
                 oss << "HTTP/1.1 403\r\n"
                     "Date: " << Util::getHttpTimeNow() << "\r\n"
-                    "User-Agent: " HTTP_AGENT_STRING "\r\n"
+                    "Server: " HTTP_SERVER_STRING "\r\n"
                     "Content-Length: 0\r\n"
                     "\r\n";
                 socket->send(oss.str());
@@ -3252,7 +3252,7 @@ private:
                 std::ostringstream oss;
                 oss << "HTTP/1.1 404 Not Found\r\n"
                     << "Date: " << Util::getHttpTimeNow() << "\r\n"
-                    << "User-Agent: " << HTTP_AGENT_STRING << "\r\n"
+                    << "Server: " HTTP_SERVER_STRING "\r\n"
                     << "Content-Length: 0\r\n"
                     << "\r\n";
                 socket->send(oss.str());
