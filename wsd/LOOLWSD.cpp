@@ -2559,6 +2559,7 @@ private:
                         << "Date: " << Poco::DateTimeFormatter::format(Poco::Timestamp(), Poco::DateTimeFormat::HTTP_FORMAT) << "\r\n"
                         << "User-Agent: " << WOPI_AGENT_STRING << "\r\n"
                         << "WWW-authenticate: Basic realm=\"online\"\r\n"
+                        << "Connection: close\r\n" // Let the client know we will disconnect.
                         << "\r\n";
                     socket->send(oss.str());
                     socket->shutdown();
@@ -2644,6 +2645,7 @@ private:
                 << "Date: " << Util::getHttpTimeNow() << "\r\n"
                 << "User-Agent: LOOLWSD WOPI Agent\r\n"
                 << "Content-Length: 0\r\n"
+                << "Connection: close\r\n" // Let the client know we will disconnect.
                 << "\r\n";
             socket->send(oss.str());
             socket->shutdown();
@@ -2715,6 +2717,7 @@ private:
             "User-Agent: " WOPI_AGENT_STRING "\r\n"
             "Content-Length: " << responseString.size() << "\r\n"
             "Content-Type: " << mimeType << "\r\n"
+            "Connection: close\r\n" // Let the client know we will disconnect.
             "\r\n";
 
         if (requestDetails.isGet())
@@ -2767,9 +2770,11 @@ private:
             "Content-Length: " << xml.size() << "\r\n"
             "Content-Type: text/xml\r\n"
             "X-Content-Type-Options: nosniff\r\n"
+            "Connection: close\r\n" // Let the client know we will disconnect.
             "\r\n"
             << xml;
 
+        LOG_ERR("Sending back: " << oss.str());
         socket->send(oss.str());
         socket->shutdown();
         LOG_INF("Sent discovery.xml successfully.");
@@ -2791,6 +2796,7 @@ private:
             "Content-Length: " << capabilities.size() << "\r\n"
             "Content-Type: application/json\r\n"
             "X-Content-Type-Options: nosniff\r\n"
+            "Connection: close\r\n" // Let the client know we will disconnect.
             "\r\n"
             << capabilities;
 
@@ -2840,6 +2846,7 @@ private:
                 << "Date: " << Util::getHttpTimeNow() << "\r\n"
                 << "User-Agent: LOOLWSD WOPI Agent\r\n"
                 << "Content-Length: 0\r\n"
+                << "Connection: close\r\n" // Let the client know we will disconnect.
                 << "\r\n"
                 << errMsg;
             socket->send(oss.str());
@@ -2929,6 +2936,7 @@ private:
             "User-Agent: " WOPI_AGENT_STRING "\r\n"
             "Content-Length: " << responseString.size() << "\r\n"
             "Content-Type: " << mimeType << "\r\n"
+            "Connection: close\r\n" // Let the client know we will disconnect.
             "\r\n";
 
         if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET)
@@ -3117,6 +3125,7 @@ private:
                     "Date: " << Util::getHttpTimeNow() << "\r\n"
                     "Server: " HTTP_SERVER_STRING "\r\n"
                     "Content-Length: 0\r\n"
+                    "Connection: close\r\n" // Let the client know we will disconnect.
                     "\r\n";
                 socket->send(oss.str());
                 socket->shutdown();
@@ -3207,6 +3216,7 @@ private:
                     File(handler.getFilename()).moveTo(fileName);
                     handler.takeFile();
                     response.setContentLength(0);
+                    response.set("Connection", "close"); // Let the client know we will disconnect.
                     socket->send(response);
                     socket->shutdown();
                     return;
@@ -3292,6 +3302,7 @@ private:
                     << "Date: " << Util::getHttpTimeNow() << "\r\n"
                     << "Server: " HTTP_SERVER_STRING "\r\n"
                     << "Content-Length: 0\r\n"
+                    << "Connection: close\r\n" // Let the client know we will disconnect.
                     << "\r\n";
                 socket->send(oss.str());
                 socket->shutdown();
