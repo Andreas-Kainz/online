@@ -701,7 +701,10 @@ bool ClientSession::_handleInput(const char *buffer, int length)
         docBroker->saveAsToStorage(getId(), "", wopiFilename, true);
         return true;
     }
-    else if (tokens.equals(0, "dialogevent") || tokens.equals(0, "formfieldevent"))
+    else if (tokens.equals(0, "dialogevent") ||
+             tokens.equals(0, "formfieldevent") ||
+             tokens.equals(0, "profilezonerecording") ||
+             tokens.equals(0, "sallogoverride"))
     {
         return forwardToChild(firstLine, docBroker);
     }
